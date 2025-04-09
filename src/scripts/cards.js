@@ -1,6 +1,7 @@
 const cardTemplate = document.querySelector('#card-template');
 const popupTypeImage = document.querySelector('.popup_type_image');
-const popupImage = document.querySelector('.popup__image');
+const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupCaption = popupTypeImage.querySelector('.popup__caption');
 import {openModal, closeModal} from './modal.js';
 
 export const initialCards = [
@@ -57,10 +58,9 @@ export function likeCard(evt) {
 }
 
 export function hendlerPopupImage(evt, popupImageElement) {
-    popupImageElement.src = '';
-    popupImageElement.alt = '';
     popupImageElement.src = evt.target.src;
     popupImageElement.alt = evt.target.alt;
+    popupCaption.textContent = evt.target.alt;
     openModal(popupTypeImage);
     closeModal(popupTypeImage);
 }

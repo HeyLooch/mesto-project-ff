@@ -15,8 +15,8 @@ const formProfileName = formProfile.querySelector('.popup__input_type_name');
 const formProfileDescription = formProfile.querySelector('.popup__input_type_description');
 
 const formPlace = document.querySelector('[name="new-place"]');
-const formPlaceName = document.querySelector('.popup__input_type_card-name');
-const formPlaceUrl = document.querySelector('.popup__input_type_url');
+const formPlaceName = formPlace.querySelector('.popup__input_type_card-name');
+const formPlaceUrl = formPlace.querySelector('.popup__input_type_url');
 
 popups.forEach((popup) => popup.classList.add('popup_is-animated'));
 
