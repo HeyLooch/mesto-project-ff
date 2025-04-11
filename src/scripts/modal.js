@@ -1,17 +1,15 @@
 export function openModal(popupElement) {
   popupElement.classList.add('popup_is-opened');
+
+  function hendlerEscape(evt) {
+    if (evt.key === 'Escape') {
+      closeModal(popupElement);
+    }
+  }
+  document.addEventListener('keydown', hendlerEscape);
 }
 
 export function closeModal(popupElement) {
-  popupElement.addEventListener('click', (evt) => {
-    const condition = evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup_is-opened') || evt.target.classList.contains('popup__button');
-    if (condition) {
-      popupElement.classList.remove('popup_is-opened');
-    }
-  });
-  document.addEventListener('keyup', (evt) => {
-    if (evt.key === "Escape") {
-      popupElement.classList.remove('popup_is-opened');
-    }
-  });
+  popupElement.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', openModal.hendlerEscape);
 }
