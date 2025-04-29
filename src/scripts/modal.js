@@ -1,7 +1,7 @@
 export function openModal(popupElement) {
   popupElement.classList.add('popup_is-opened');
 
-  function hendlerEscape(evt) {
+  function  hendlerEscape(evt) {
     if (evt.key === 'Escape') {
       closeModal(popupElement);
     }

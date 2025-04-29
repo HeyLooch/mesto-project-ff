@@ -2,6 +2,8 @@ import '../pages/index.css';
 import {initialCards} from './initialCards.js'
 import {createCard, deleteCard, likeCard} from './cards.js';
 import {openModal, closeModal} from './modal.js';
+import {enableValidation, clearValidation} from './validation.js';
+import {getInitialCards} from './api.js';
 const placesList = document.querySelector('.places__list');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
@@ -36,6 +38,14 @@ initialCards.forEach(card => {
 
 //Слушаем кнопки
 profileEditButton.addEventListener('click', () => {
+  clearValidation(formProfile, {
+    inputSelector: '.popup__input',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible',
+    popupErrorClass: '.popup__error',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled'
+  });
   fillFormProfile();
   openModal(popupTypeEdit);
 });
@@ -89,6 +99,10 @@ function handleFormCardSubmit(evt) {
   }
   renderCard(newCard, 'prepend');
   closeModal(popupTypeNewCard);
+  clearValidation(formPlace, {
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled'
+  });
   formPlace.reset();
 }
 
@@ -98,3 +112,22 @@ function hendlerPopupImage(link, name) {
   popupCaption.textContent = name;
   openModal(popupTypeImage);
 }
+
+//включаем валидацию
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+});
+
+//получаем список карточек
+getInitialCards()
+  .then((result) => {
+    // обрабатываем результат
+  })
+  .catch((err) => {
+    console.log(err); // выводим ошибку в консоль
+  });
