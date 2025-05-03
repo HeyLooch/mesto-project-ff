@@ -7,11 +7,11 @@ export function openModal(popupElement) {
     }
   }
   document.addEventListener('keydown', hendlerEscape);
-  openModal.hendlerEsc = hendlerEscape;
+  popupElement.hendlerEsc = hendlerEscape;
 }
 
 export function closeModal(popupElement) {
   popupElement.classList.remove('popup_is-opened');
-  document.removeEventListener('keydown', openModal.hendlerEsc);
-  delete openModal.hendlerEsc;
+  document.removeEventListener('keydown', popupElement.hendlerEsc);
+  delete popupElement.hendlerEsc;
 }

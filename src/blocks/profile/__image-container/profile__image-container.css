@@ -1,0 +1,33 @@
+.profile__image-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 29px 0 0;
+}
+
+.profile__image-container::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../../../images/edit-icon.svg') center no-repeat;
+  background-color: rgba(0, 0, 0, 0.8);
+  background-size: 26px 26px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.profile__image-container:hover::after{
+  opacity: 1;
+}
+
+@media screen and (max-width: 740px) {
+  .profile__image {
+    margin: 0 10px 0 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .profile__image {
+    margin-right: 0;
+  }
+}
