@@ -14,4 +14,5 @@ export function closeModal(popupElement) {
   popupElement.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', popupElement.hendlerEsc);
   delete popupElement.hendlerEsc;
+  
 }

@@ -1,8 +1,9 @@
 import '../pages/index.css';
-import {createCard, likeCard} from './cards.js';
+import {createCard, deleteCard, likeCard} from './cards.js';
 import {openModal, closeModal} from './modal.js';
 import {enableValidation, clearValidation} from './validation.js';
 import {getUserDataApi, updateProfileApi, getInitialCardsApi, postCardApi, updateAvatarApi} from './api.js';
+
 const placesList = document.querySelector('.places__list');
 const profileImageContainer = document.querySelector('.profile__image-container')
 const profileImage = document.querySelector('.profile__image');
@@ -33,23 +34,25 @@ const popupTypeImage = document.querySelector('.popup_type_image');
 const popupCaption = popupTypeImage.querySelector('.popup__caption');
 const popupImage = document.querySelector('.popup__image');
 
-//заполняем профиль данными с сервера и сохраняем свой id,
+const cardCreateArgs = {
+    deleteCardFunc: deleteCard,
+    likeCardFunc: likeCard,
+    handleImageFunc: hendlerPopupImage,
+  };
+
+//заполняем профиль данными с сервера и передаем свой id в cardCreateArgs,
 //рендерим карточки
 Promise.all([getUserDataApi(), getInitialCardsApi()])
 .then(([userData, cardArray]) => {
   const userId = userData._id;
-  const cardCreateArgs = {
-    likeCardFunc: likeCard,
-    handleImageFunc: hendlerPopupImage,
-    currentId: userId
-  };
+  cardCreateArgs.currentId = userId;
+
   profileTitle.textContent = userData.name;
   profileDescription.textContent = userData.about;
   profileImage.src = userData.avatar;
 
   cardArray.forEach((card) => {
     renderCard(card, cardCreateArgs);
-    console.log(card);
   });
 })
 .catch(error => {
@@ -137,7 +140,6 @@ function handleFormAvatarSubmit(evt) {
   .then(updatedProfile => {
   profileImage.src = formAvatarUrl.value;
   closeModal(popupTypeAvatar);
-  console.log(updatedProfile)
   });
 }
 
@@ -149,7 +151,6 @@ function handleFormProfileSubmit(evt) {
 
   updateProfileApi(formProfileName.value, formProfileDescription.value)
   .then(updatedProfile => {
-    console.log(updatedProfile);
     closeModal(popupTypeEdit);
   });
 }
