@@ -1,5 +1,5 @@
 import '../pages/index.css';
-import {createCard, deleteCard, likeCard} from './cards.js';
+import {createCard, likeCard} from './cards.js';
 import {openModal, closeModal} from './modal.js';
 import {enableValidation, clearValidation} from './validation.js';
 import {getUserDataApi, updateProfileApi, getInitialCardsApi, postCardApi, updateAvatarApi} from './api.js';
@@ -33,25 +33,22 @@ const popupTypeImage = document.querySelector('.popup_type_image');
 const popupCaption = popupTypeImage.querySelector('.popup__caption');
 const popupImage = document.querySelector('.popup__image');
 
-export let currentId;
-
-const cardCreateArgs = {
-  // deleteCardFunc: deleteCard,
-  // likeCardFunc: likeCard,
-  handleImageFunc: hendlerPopupImage,
-};
-
 //заполняем профиль данными с сервера и сохраняем свой id,
 //рендерим карточки
 Promise.all([getUserDataApi(), getInitialCardsApi()])
 .then(([userData, cardArray]) => {
+  const userId = userData._id;
+  const cardCreateArgs = {
+    likeCardFunc: likeCard,
+    handleImageFunc: hendlerPopupImage,
+    currentId: userId
+  };
   profileTitle.textContent = userData.name;
   profileDescription.textContent = userData.about;
   profileImage.src = userData.avatar;
-  currentId = userData._id;
 
   cardArray.forEach((card) => {
-    renderCard(card);
+    renderCard(card, cardCreateArgs);
     console.log(card);
   });
 })
@@ -110,7 +107,7 @@ formProfile.addEventListener('submit', handleFormProfileSubmit);
 formPlace.addEventListener('submit', handleFormNewCardSubmit);
 
 //объявляем функцию рендера карточки
-function renderCard(cardData, method = 'append') {
+function renderCard(cardData, cardCreateArgs, method = 'append') {
   const cardElement = createCard(cardData, cardCreateArgs);
   placesList[method](cardElement);
 }
