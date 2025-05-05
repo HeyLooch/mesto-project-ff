@@ -6,16 +6,18 @@ const config = {
   }
 }
 
+const hendleResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export const getUserDataApi = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+  .then(hendleResponse);
 }
 
 export const updateProfileApi = (name, about) => {
@@ -27,24 +29,14 @@ export const updateProfileApi = (name, about) => {
       about
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+  .then(hendleResponse);
 }
 
 export const getInitialCardsApi = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+  .then(hendleResponse);
 }
 
 export const postCardApi = (cardData) => {
@@ -56,12 +48,7 @@ export const postCardApi = (cardData) => {
       link: cardData.link
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+  .then(hendleResponse);
 }
 
 export const deleteCardApi = (cardId) => {
@@ -69,12 +56,7 @@ export const deleteCardApi = (cardId) => {
     method: 'DELETE',
     headers: config.headers,
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  .then(hendleResponse);
 }
 
 export const toggleLikeApi = (cardId, isLiked) => {
@@ -84,12 +66,7 @@ export const toggleLikeApi = (cardId, isLiked) => {
     method: method,
     headers: config.headers,
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  .then(hendleResponse);
 }
 
 export const updateAvatarApi = (url) => {
@@ -100,10 +77,5 @@ export const updateAvatarApi = (url) => {
       avatar: url
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+  .then(hendleResponse);
 }

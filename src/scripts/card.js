@@ -1,4 +1,5 @@
 import {deleteCardApi, toggleLikeApi} from './api.js';
+import {hendleError} from './index.js';
 
 export function createCard(cardData, parameters) {
   const {deleteCardFunc, likeCardFunc, handleImageFunc, currentId} = parameters;
@@ -27,8 +28,7 @@ export function createCard(cardData, parameters) {
     likeButton.classList.add('card__like-button_is-active');
   }
 
-  likeButton.addEventListener('click', (evt) => likeCardFunc(evt, currentId, cardData._id, likeCounter, isLike)
-  );
+  likeButton.addEventListener('click', (evt) => likeCardFunc(evt, currentId, cardData._id, likeCounter, isLike));
 
   cardImage.addEventListener('click', () => handleImageFunc(cardImage.src, cardImage.alt));
 
@@ -39,7 +39,8 @@ export function deleteCard(cardId, card) {
   deleteCardApi(cardId) 
   .then(res => {
     card.remove();
-  });
+  })
+  .catch(hendleError);
 }
 
 export function likeCard(evt, currId, cardId, likeCounterElement, isLike) {
@@ -48,5 +49,6 @@ export function likeCard(evt, currId, cardId, likeCounterElement, isLike) {
     evt.target.classList.toggle('card__like-button_is-active');
     likeCounterElement.textContent = data.likes.length;
     isLike.liked = data.likes.some(like => like._id === currId);
-  });
+  })
+  .catch(hendleError);
   }
