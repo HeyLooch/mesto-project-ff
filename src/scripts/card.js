@@ -1,5 +1,8 @@
 import {deleteCardApi, toggleLikeApi} from './api.js';
-import {hendleError} from './index.js';
+
+const logError = (err) => {
+  return console.error('Ошибка загрузки данных:', err);
+}
 
 export function createCard(cardData, parameters) {
   const {deleteCardFunc, likeCardFunc, handleImageFunc, currentId} = parameters;
@@ -40,7 +43,7 @@ export function deleteCard(cardId, card) {
   .then(res => {
     card.remove();
   })
-  .catch(hendleError);
+  .catch(logError);
 }
 
 export function likeCard(evt, currId, cardId, likeCounterElement, isLike) {
@@ -50,5 +53,5 @@ export function likeCard(evt, currId, cardId, likeCounterElement, isLike) {
     likeCounterElement.textContent = data.likes.length;
     isLike.liked = data.likes.some(like => like._id === currId);
   })
-  .catch(hendleError);
-  }
+  .catch(logError);
+}

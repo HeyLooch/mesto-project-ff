@@ -57,7 +57,7 @@ export function clearValidation(formElement, validationConfig) {
   inputElements.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig)
   });
-  toggleButtonState(inputElements, submitButton, validationConfig);
+  disableSubmitButton(submitButton, validationConfig);
 }
 
 export function enableValidation(validationConfig) {

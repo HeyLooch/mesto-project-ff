@@ -64,13 +64,12 @@ Promise.all([getUserDataApi(), getInitialCardsApi()])
     renderCard(card, cardCreateArgs);
   });
 })
-.catch(hendleError);
+.catch(logError);
 
 //Слушаем кнопки
 profileImageContainer.addEventListener('click', (evt) => {
   clearValidation(formAvatar, validationConfigClear);
   formAvatarUrl.value = profileImage.src;
-  fillSubmitButton(formAvatarSubmitButton);
   openModal(popupTypeAvatar);
 });
 
@@ -78,14 +77,12 @@ profileEditButton.addEventListener('click', (evt) => {
   clearValidation(formProfile, validationConfigClear);
   formProfileName.value = profileTitle.textContent;
   formProfileDescription.value = profileDescription.textContent;
-  fillSubmitButton(formProfileSubmitButton);
   openModal(popupTypeEdit);
 });
 
 profileAddPlaceButton.addEventListener('click', (evt) => {
   formPlace.reset();
   clearValidation(formPlace, validationConfigClear);
-  fillSubmitButton(formPlaceSubmitButton);
   openModal(popupTypeNewCard);
 });
 
@@ -107,15 +104,15 @@ formAvatar.addEventListener('submit', handleFormAvatarSubmit);
 formProfile.addEventListener('submit', handleFormProfileSubmit);
 formPlace.addEventListener('submit', handleFormNewCardSubmit);
 
-//объявляем функцию-обработчик ошибки в блоке catch
-export function hendleError(err) {
-  return console.error('Ошибка загрузки данных:', err);
-}
-
 //объявляем функцию рендера карточки
 function renderCard(cardData, cardCreateArgs, method = 'append') {
   const cardElement = createCard(cardData, cardCreateArgs);
   placesList[method](cardElement);
+}
+
+//объявляем функцию-обработчик ошибки в блоке catch
+function logError(err) {
+  return console.error('Ошибка загрузки данных:', err);
 }
 
 //объявляем функцию заполнения профиля
@@ -126,19 +123,22 @@ function fillSubmitButton(button) {
 //Объявляем обработчики сабмитов
 function handleFormAvatarSubmit(evt) {
   evt.preventDefault();
-  formAvatarSubmitButton.textContent = '...';
+  formAvatarSubmitButton.textContent = 'Сохранение...';
 
   updateAvatarApi(formAvatarUrl.value)
   .then(updatedProfile => {
   profileImage.src = formAvatarUrl.value;
   closeModal(popupTypeAvatar);
   })
-  .catch(hendleError);
+  .catch(logError)
+  .finally(() => {
+    fillSubmitButton(formAvatarSubmitButton);
+  });
 }
 
 function handleFormProfileSubmit(evt) {
   evt.preventDefault();
-  formProfileSubmitButton.textContent = '...';
+  formProfileSubmitButton.textContent = 'Сохранение...';
 
   updateProfileApi(formProfileName.value, formProfileDescription.value)
   .then(updatedProfile => {
@@ -146,12 +146,15 @@ function handleFormProfileSubmit(evt) {
     profileDescription.textContent = formProfileDescription.value;
     closeModal(popupTypeEdit);
   })
-  .catch(hendleError);
+  .catch(logError)
+  .finally(() => {
+    fillSubmitButton(formProfileSubmitButton);
+  });
 }
 
 function handleFormNewCardSubmit(evt) {
   evt.preventDefault();
-  formPlaceSubmitButton.textContent = '...';
+  formPlaceSubmitButton.textContent = 'Сохранение...';
   const newCard = {
     name: formPlaceName.value,
     link: formPlaceUrl.value
@@ -163,7 +166,10 @@ function handleFormNewCardSubmit(evt) {
     clearValidation(formPlace, validationConfigClear);
     formPlace.reset();
   })
-  .catch(hendleError);
+  .catch(logError)
+  .finally(() => {
+    fillSubmitButton(formPlaceSubmitButton);
+  });
 }
 
 function hendlerPopupImage(link, name) {
