@@ -49,7 +49,7 @@ const validationConfigClear =  {
   inactiveButtonClass: 'popup__button_disabled'
 }
 
-//заполняем профиль данными с сервера и передаем свой id в cardCreateArgs,
+//заполняем профиль данными с сервера и передаем свой id в cardCreateArgs
 //рендерим карточки
 Promise.all([getUserDataApi(), getInitialCardsApi()])
 .then(([userData, cardArray]) => {
